@@ -12,6 +12,7 @@ namespace Kalenda;
 use Kalenda\Api\LitCalClient;
 use Kalenda\Contracts\Registrable;
 use Kalenda\Rest\CalendarController;
+use Kalenda\Rest\MetadataController;
 use Kalenda\Rest\RestRegistrar;
 use Kalenda\Support\Options;
 
@@ -97,6 +98,7 @@ final class Plugin {
 
 		$services = array(
 			new RestRegistrar(
+				new MetadataController( $gateway ),
 				new CalendarController( $gateway, $options )
 			),
 		);

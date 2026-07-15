@@ -9,6 +9,9 @@ declare( strict_types=1 );
 
 namespace Kalenda\Rest;
 
+use DateTimeImmutable;
+use DateTimeInterface;
+use Exception;
 use InvalidArgumentException;
 use Kalenda\Api\CalendarQuery;
 use Kalenda\Contracts\LitCalGateway;
@@ -37,8 +40,8 @@ final class CalendarController implements RouteProvider {
 	 * @param Options       $options Plugin defaults for unspecified arguments.
 	 */
 	public function __construct(
-		private LitCalGateway $gateway,
-		private Options $options
+		private readonly LitCalGateway $gateway,
+		private readonly Options $options
 	) {}
 
 	/**
@@ -51,6 +54,17 @@ final class CalendarController implements RouteProvider {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_calendar' ),
+				'permission_callback' => '__return_true',
+				'args'                => $this->args(),
+			)
+		);
+
+		register_rest_route(
+			RestRegistrar::REST_NAMESPACE,
+			'/day',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_day' ),
 				'permission_callback' => '__return_true',
 				'args'                => $this->args(),
 			)
@@ -151,6 +165,57 @@ final class CalendarController implements RouteProvider {
 	}
 
 	/**
+	 * Return available calendar metadata.
+	 *
+	 * @param WP_REST_Request $request The REST request.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 * @throws Exception When the requested date cannot be resolved.
+	 */
+	public function get_day( WP_REST_Request $request ) {
+		$date = $this->resolve_date( $request );
+
+		try {
+			$query = CalendarQuery::create(
+				(string) $request['type'],
+				(string) $request['calendar_id'],
+				(int) $date->format( 'Y' ),
+				CalendarQuery::YEAR_CIVIL,
+				(string) $request['locale']
+			);
+
+			$data = $this->gateway->calendar( $query );
+		} catch ( InvalidArgumentException $e ) {
+			return new WP_Error(
+				'rest_invalid_param',
+				$e->getMessage(),
+				array( 'status' => 400 )
+			);
+		} catch ( GatewayException $e ) {
+			return new WP_Error(
+				'kalenda_upstream_unavailable',
+				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		$day = $this->find_day( $data, $date );
+
+		if ( null === $day ) {
+			return new WP_Error(
+				'kalenda_day_not_found',
+				__( 'No liturgical information found for the requested date.', 'kalenda' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$response = new WP_REST_Response( $day );
+		$response->header( 'Cache-Control', 'public, max-age=3600' );
+
+		return $response;
+	}
+
+	/**
 	 * Ensure a requested nation/diocese id actually exists.
 	 *
 	 * Checked against the live metadata allowlist rather than a hardcoded list,
@@ -188,5 +253,46 @@ final class CalendarController implements RouteProvider {
 			),
 			array( 'status' => 400 )
 		);
+	}
+
+	/**
+	 * Resolve the requested date or default to today in the site timezone.
+	 *
+	 * @param WP_REST_Request $request The REST request.
+	 *
+	 * @return DateTimeImmutable
+	 * @throws Exception When the supplied date cannot be parsed.
+	 */
+	private function resolve_date( WP_REST_Request $request ): DateTimeImmutable {
+		if ( empty( $request['date'] ) ) {
+			return current_datetime();
+		}
+
+		return new DateTimeImmutable(
+			(string) $request['date'],
+			wp_timezone()
+		);
+	}
+
+	/**
+	 * Find the liturgical information for a single day.
+	 *
+	 * @param array<string,mixed> $calendar Calendar response.
+	 * @param DateTimeInterface   $date     Requested day.
+	 * @return array<string,mixed>|null
+	 */
+	private function find_day( array $calendar, DateTimeInterface $date ): ?array {
+		$wanted = $date->format( 'Y-m-d' );
+
+		foreach ( $calendar['litcal'] ?? array() as $event ) {
+			if (
+				isset( $event['date'] ) &&
+				str_starts_with( (string) $event['date'], $wanted )
+			) {
+				return $event;
+			}
+		}
+
+		return null;
 	}
 }
