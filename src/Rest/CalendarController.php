@@ -10,8 +10,7 @@ declare( strict_types=1 );
 namespace Kalenda\Rest;
 
 use DateTimeImmutable;
-use DateTimeInterface;
-use Exception;
+use Exception as DateParseException;
 use InvalidArgumentException;
 use Kalenda\Api\CalendarQuery;
 use Kalenda\Contracts\LitCalGateway;
@@ -55,7 +54,7 @@ final class CalendarController implements RouteProvider {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_calendar' ),
 				'permission_callback' => '__return_true',
-				'args'                => $this->args(),
+				'args'                => $this->calendar_args(),
 			)
 		);
 
@@ -66,7 +65,7 @@ final class CalendarController implements RouteProvider {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_day' ),
 				'permission_callback' => '__return_true',
-				'args'                => $this->args(),
+				'args'                => $this->day_args(),
 			)
 		);
 	}
@@ -79,7 +78,7 @@ final class CalendarController implements RouteProvider {
 	 *
 	 * @return array<string,array<string,mixed>>
 	 */
-	private function args(): array {
+	private function calendar_args(): array {
 		return array(
 			'type'        => array(
 				'type'              => 'string',
@@ -121,12 +120,49 @@ final class CalendarController implements RouteProvider {
 	}
 
 	/**
+	 * Argument schema for `/day`.
+	 *
+	 * Same as {@see calendar_args()} but with `year`/`year_type` replaced by
+	 * `date`: the year is derived from the resolved date and the year type is
+	 * always CIVIL, so exposing them here would just be two params clients
+	 * could set that silently do nothing.
+	 *
+	 * `date` is restricted to a bare `Y-m-d` string on purpose: accepting any
+	 * string `DateTimeImmutable` can parse would let a client-supplied
+	 * timezone offset (e.g. `2026-01-01T00:00:00+05:00`) override the site
+	 * timezone `resolve_date()` applies, which is exactly the off-by-one this
+	 * route needs to avoid.
+	 *
+	 * @return array<string,array<string,mixed>>
+	 */
+	private function day_args(): array {
+		$args = $this->calendar_args();
+		unset( $args['year'], $args['year_type'] );
+
+		$args['date'] = array(
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+			'validate_callback' => static function ( mixed $value ): bool {
+				if ( ! is_string( $value ) || 1 !== preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $value, $m ) ) {
+					return false;
+				}
+
+				// Reject well-formed but non-existent dates (e.g. 2026-02-30),
+				// which DateTimeImmutable would otherwise silently roll over.
+				return checkdate( (int) $m[2], (int) $m[3], (int) $m[1] );
+			},
+		);
+
+		return $args;
+	}
+
+	/**
 	 * Handle the request.
 	 *
 	 * @param WP_REST_Request $request The REST request.
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function get_calendar( WP_REST_Request $request ) {
+	public function get_calendar( WP_REST_Request $request ): WP_REST_Response|WP_Error {
 		try {
 			$query = CalendarQuery::create(
 				(string) $request['type'],
@@ -136,44 +172,34 @@ final class CalendarController implements RouteProvider {
 				(string) $request['locale']
 			);
 		} catch ( InvalidArgumentException $e ) {
-			return new WP_Error(
-				'rest_invalid_param',
-				$e->getMessage(),
-				array( 'status' => 400 )
-			);
+			return $this->invalid_param_error( $e->getMessage() );
 		}
 
-		try {
-			$allowlist_error = $this->validate_calendar_id( $query );
-			if ( $allowlist_error instanceof WP_Error ) {
-				return $allowlist_error;
-			}
+		$data = $this->fetch( $query );
 
-			$data = $this->gateway->calendar( $query );
-		} catch ( GatewayException $e ) {
-			return new WP_Error(
-				'kalenda_upstream_unavailable',
-				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
-				array( 'status' => 502 )
-			);
-		}
-
-		$response = new WP_REST_Response( $data );
-		$response->header( 'Cache-Control', 'public, max-age=3600' );
-
-		return $response;
+		return $data instanceof WP_Error
+			? $data
+			: $this->cached_response( $data, $this->year_max_age( $query->year ) );
 	}
 
 	/**
-	 * Return available calendar metadata.
+	 * Handle `GET /day`.
+	 *
+	 * Resolves the requested (or today's) date in the site timezone, fetches
+	 * the CIVIL-year calendar for that date's year, and returns the same
+	 * `litcal`/`settings`/`metadata`/`messages` envelope as `/calendar` with
+	 * `litcal` filtered down to that day — possibly more than one entry (a
+	 * vigil Mass and the next day's feast can share a date), possibly none.
 	 *
 	 * @param WP_REST_Request $request The REST request.
-	 *
 	 * @return WP_REST_Response|WP_Error
-	 * @throws Exception When the requested date cannot be resolved.
 	 */
-	public function get_day( WP_REST_Request $request ) {
-		$date = $this->resolve_date( $request );
+	public function get_day( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+		try {
+			$date = $this->resolve_date( $request );
+		} catch ( DateParseException $e ) {
+			return $this->invalid_param_error( __( 'The requested date could not be parsed.', 'kalenda' ) );
+		}
 
 		try {
 			$query = CalendarQuery::create(
@@ -183,116 +209,208 @@ final class CalendarController implements RouteProvider {
 				CalendarQuery::YEAR_CIVIL,
 				(string) $request['locale']
 			);
-
-			$data = $this->gateway->calendar( $query );
 		} catch ( InvalidArgumentException $e ) {
-			return new WP_Error(
-				'rest_invalid_param',
-				$e->getMessage(),
-				array( 'status' => 400 )
-			);
-		} catch ( GatewayException $e ) {
-			return new WP_Error(
-				'kalenda_upstream_unavailable',
-				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
-				array( 'status' => 502 )
-			);
+			return $this->invalid_param_error( $e->getMessage() );
 		}
 
-		$day = $this->find_day( $data, $date );
-
-		if ( null === $day ) {
-			return new WP_Error(
-				'kalenda_day_not_found',
-				__( 'No liturgical information found for the requested date.', 'kalenda' ),
-				array( 'status' => 404 )
-			);
+		$data = $this->fetch( $query );
+		if ( $data instanceof WP_Error ) {
+			return $data;
 		}
 
-		$response = new WP_REST_Response( $day );
-		$response->header( 'Cache-Control', 'public, max-age=3600' );
+		$data['litcal'] = $this->events_on( (array) ( $data['litcal'] ?? array() ), $date->format( 'Y-m-d' ) );
 
-		return $response;
+		return $this->cached_response( $data, $this->day_max_age( $date ) );
 	}
 
 	/**
-	 * Ensure a requested nation/diocese id actually exists.
+	 * Run a validated query through the allowlist and the gateway.
 	 *
-	 * Checked against the live metadata allowlist rather than a hardcoded list,
-	 * so newly published calendars work without a plugin update.
+	 * Shared by both routes: performs the metadata allowlist check, then fetches
+	 * (and caches, in the gateway) the calendar, translating an unavailable
+	 * upstream into a 502.
+	 *
+	 * @param CalendarQuery $query The query to run.
+	 * @return array<string,mixed>|WP_Error Gateway data, or an error response.
+	 */
+	private function fetch( CalendarQuery $query ): array|WP_Error {
+		$allowlist_error = $this->check_allowlist( $query );
+		if ( null !== $allowlist_error ) {
+			return $allowlist_error;
+		}
+
+		try {
+			return $this->gateway->calendar( $query );
+		} catch ( GatewayException $e ) {
+			return $this->upstream_error();
+		}
+	}
+
+	/**
+	 * Validate a query's calendar id and locale against the live metadata
+	 * allowlist. Checked separately from {@see CalendarQuery}'s own structural
+	 * validation because membership requires a network round trip the value
+	 * object has no business making.
 	 *
 	 * @param CalendarQuery $query The query to check.
-	 * @return WP_Error|null A 400 error when the id is unknown, otherwise null.
-	 *
-	 * @throws GatewayException When metadata cannot be retrieved.
+	 * @return WP_Error|null A 400 error when invalid, null when allowed
+	 *                       (including when the allowlist itself is unavailable —
+	 *                       we degrade gracefully rather than block on it).
 	 */
-	private function validate_calendar_id( CalendarQuery $query ): ?WP_Error {
-		if ( CalendarQuery::TYPE_GENERAL === $query->type ) {
+	private function check_allowlist( CalendarQuery $query ): ?WP_Error {
+		try {
+			$allowlist = new MetadataAllowlist( $this->gateway->metadata() );
+		} catch ( GatewayException $e ) {
 			return null;
 		}
 
-		$metadata = $this->gateway->metadata();
-
-		$key = CalendarQuery::TYPE_NATION === $query->type
-			? 'national_calendars_keys'
-			: 'diocesan_calendars_keys';
-
-		$allowed = isset( $metadata[ $key ] ) && is_array( $metadata[ $key ] ) ? $metadata[ $key ] : array();
-
-		if ( in_array( $query->calendar_id, $allowed, true ) ) {
-			return null;
-		}
-
-		return new WP_Error(
-			'rest_invalid_param',
-			sprintf(
+		if ( CalendarQuery::TYPE_GENERAL !== $query->type
+			&& ! $allowlist->is_valid_calendar_id( $query->type, (string) $query->calendar_id )
+		) {
+			return $this->invalid_param_error(
+				sprintf(
 				/* translators: 1: calendar type (nation or diocese), 2: requested id. */
-				__( 'Unknown %1$s calendar: %2$s.', 'kalenda' ),
-				$query->type,
-				$query->calendar_id
-			),
-			array( 'status' => 400 )
-		);
+					__( 'Unknown %1$s calendar: %2$s.', 'kalenda' ),
+					$query->type,
+					(string) $query->calendar_id
+				)
+			);
+		}
+
+		if ( ! $allowlist->is_valid_locale( $query->type, $query->calendar_id, $query->locale ) ) {
+			return $this->invalid_param_error(
+				sprintf(
+				/* translators: %s: the unsupported locale code. */
+					__( 'Unsupported locale for this calendar: %s', 'kalenda' ),
+					$query->locale
+				)
+			);
+		}
+
+		return null;
 	}
 
 	/**
-	 * Resolve the requested date or default to today in the site timezone.
+	 * Resolve the requested date, or default to today in the site timezone.
+	 *
+	 * `date` is already constrained to `Y-m-d` by the `/day` arg schema, so
+	 * this never receives a string carrying its own timezone/offset — the
+	 * explicit {@see wp_timezone()} always wins.
 	 *
 	 * @param WP_REST_Request $request The REST request.
-	 *
 	 * @return DateTimeImmutable
-	 * @throws Exception When the supplied date cannot be parsed.
+	 *
+	 * @throws DateParseException When the supplied date cannot be parsed (should not
+	 *                            happen given the schema's validate_callback, but the
+	 *                            constructor call is not itself typed to guarantee it).
 	 */
 	private function resolve_date( WP_REST_Request $request ): DateTimeImmutable {
 		if ( empty( $request['date'] ) ) {
 			return current_datetime();
 		}
 
-		return new DateTimeImmutable(
-			(string) $request['date'],
-			wp_timezone()
+		return new DateTimeImmutable( (string) $request['date'], wp_timezone() );
+	}
+
+	/**
+	 * Every event in a `litcal` array falling on a given date.
+	 *
+	 * A single date can carry more than one entry (a vigil Mass and the next
+	 * day's feast, optional memorials, etc.), so this returns all matches
+	 * rather than the first.
+	 *
+	 * @param array<int,mixed> $events Full year's events, as returned by the gateway.
+	 * @param string           $date   The `Y-m-d` date to keep.
+	 * @return array<int,mixed>
+	 */
+	private function events_on( array $events, string $date ): array {
+		return array_values(
+			array_filter(
+				$events,
+				static function ( mixed $event ) use ( $date ): bool {
+					$event_date = is_array( $event ) ? ( $event['date'] ?? null ) : null;
+
+					return is_string( $event_date ) && str_starts_with( $event_date, $date );
+				}
+			)
 		);
 	}
 
 	/**
-	 * Find the liturgical information for a single day.
+	 * Wrap gateway data in a response with a Cache-Control header, so HTTP
+	 * caches/CDNs can help absorb load on top of the gateway's own transient cache.
 	 *
-	 * @param array<string,mixed> $calendar Calendar response.
-	 * @param DateTimeInterface   $date     Requested day.
-	 * @return array<string,mixed>|null
+	 * @param array<string,mixed> $data    Gateway response body.
+	 * @param int                 $max_age Public cache lifetime in seconds.
+	 * @return WP_REST_Response
 	 */
-	private function find_day( array $calendar, DateTimeInterface $date ): ?array {
-		$wanted = $date->format( 'Y-m-d' );
+	private function cached_response( array $data, int $max_age ): WP_REST_Response {
+		$response = new WP_REST_Response( $data );
+		$response->header( 'Cache-Control', sprintf( 'public, max-age=%d', max( 0, $max_age ) ) );
 
-		foreach ( $calendar['litcal'] ?? array() as $event ) {
-			if (
-				isset( $event['date'] ) &&
-				str_starts_with( (string) $event['date'], $wanted )
-			) {
-				return $event;
-			}
+		return $response;
+	}
+
+	/**
+	 * HTTP max-age for a calendar year, mirroring the gateway's cache tiering:
+	 * past years are liturgically immutable and can be cached hard, while the
+	 * current and future years use the configurable default.
+	 *
+	 * @param int $year Calendar year.
+	 * @return int Seconds.
+	 */
+	private function year_max_age( int $year ): int {
+		return $year < (int) current_datetime()->format( 'Y' )
+			? YEAR_IN_SECONDS
+			: max( 0, $this->options->cache_ttl() );
+	}
+
+	/**
+	 * HTTP max-age for a `/day` response.
+	 *
+	 * An explicit past/future date follows the year tiering. For *today*, the
+	 * value is capped at the time left until midnight in the site timezone, so a
+	 * cache never keeps serving today's celebration once the day has rolled over.
+	 *
+	 * @param DateTimeImmutable $date The resolved date.
+	 * @return int Seconds.
+	 */
+	private function day_max_age( DateTimeImmutable $date ): int {
+		$now = current_datetime();
+
+		if ( $date->format( 'Y-m-d' ) !== $now->format( 'Y-m-d' ) ) {
+			return $this->year_max_age( (int) $date->format( 'Y' ) );
 		}
 
-		return null;
+		$until_midnight = $now->modify( 'tomorrow midnight' )->getTimestamp() - $now->getTimestamp();
+
+		return max( 0, min( $this->options->cache_ttl(), $until_midnight ) );
+	}
+
+	/**
+	 * A 400 error using WP core's own arg-validation error code, so REST
+	 * consumers see one consistent code whether WP's schema validation or our
+	 * domain validation caught the problem.
+	 *
+	 * @param string $message Human-readable, translatable error message.
+	 * @return WP_Error
+	 */
+	private function invalid_param_error( string $message ): WP_Error {
+		return new WP_Error( 'rest_invalid_param', $message, array( 'status' => 400 ) );
+	}
+
+	/**
+	 * A 502 error for an unavailable upstream. Never includes the caught
+	 * exception's own message — it may embed transport details not meant for
+	 * API consumers.
+	 *
+	 * @return WP_Error
+	 */
+	private function upstream_error(): WP_Error {
+		return new WP_Error(
+			'kalenda_upstream_unavailable',
+			__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
+			array( 'status' => 502 )
+		);
 	}
 }
