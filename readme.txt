@@ -28,6 +28,26 @@ Liturgical data is provided by the [LitCal project](https://litcal.johnromanodor
 2. Activate the plugin through the **Plugins** menu in WordPress.
 3. Add a **Kalenda** block to any post or page, or configure defaults under **Settings → Kalenda**.
 
+== External Services ==
+
+Kalenda connects to the public LitCal API to retrieve Catholic liturgical calendar data.
+
+When data is requested, the plugin sends:
+* The requested liturgical year.
+* The requested year type.
+* The requested locale.
+* The requested calendar identifier (for national or diocesan calendars, when applicable).
+
+No personal information, user accounts, or site content is transmitted.
+
+Requests are made only when liturgical data is required. Responses are cached locally in WordPress to reduce external requests.
+
+LitCal API:
+https://litcal.johnromanodorazio.com/
+
+LitCal API documentation:
+https://github.com/Liturgical-Calendar/LiturgicalCalendarAPI
+
 == Frequently Asked Questions ==
 
 = Does this require an account or API key? =
