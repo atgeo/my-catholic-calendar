@@ -47,6 +47,27 @@
 				<element value="KALENDA"/>
 			</property>
 		</properties>
+		<!--
+			Block render.php templates have no namespace and assign top-level
+			variables by design ($attributes, $content, $block, and everything a
+			template derives from them) — but WordPress core always includes them
+			from inside WP_Block_Type::render()'s method scope, so these are local
+			variables, not real global-namespace pollution. PrefixAllGlobals has no
+			file-scoping awareness (unlike GlobalVariablesOverride's
+			treat_files_as_scoped), so exempt this specific, well-understood path.
+		-->
+		<exclude-pattern>/blocks/*/render\.php</exclude-pattern>
+	</rule>
+
+	<!--
+		Same rationale as above: render.php locals (e.g. $title) can coincide with
+		names WordPress core treats as protectable globals, even though they are
+		include-scoped locals here, not the real global. Rather than rely on the
+		sniff's own treat_files_as_scoped switch (which would apply plugin-wide),
+		scope the exemption to the same render.php path for consistency.
+	-->
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>/blocks/*/render\.php</exclude-pattern>
 	</rule>
 
 	<!-- Enforce a single, correct text domain. -->
