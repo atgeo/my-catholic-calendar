@@ -24,16 +24,16 @@ $kalenda_render_error = static function ( string $message ): void {
 	);
 };
 
-$date = current_datetime();
+$kalenda_date = current_datetime();
 
-$repository  = kalenda()->calendar_repository();
-$day_service = kalenda()->day_service();
+$kalenda_repository  = kalenda()->calendar_repository();
+$kalenda_day_service = kalenda()->day_service();
 
 try {
-	$query = CalendarQuery::create(
+	$kalenda_query = CalendarQuery::create(
 		(string) ( $attributes['type'] ?? 'general' ),
 		(string) ( $attributes['calendarId'] ?? '' ),
-		(int) $date->format( 'Y' ),
+		(int) $kalenda_date->format( 'Y' ),
 		CalendarQuery::YEAR_CIVIL,
 		(string) ( $attributes['locale'] ?? 'en' )
 	);
@@ -42,76 +42,76 @@ try {
 	return;
 }
 
-$data = $repository->fetch( $query );
+$kalenda_data = $kalenda_repository->fetch( $kalenda_query );
 
-if ( $data instanceof WP_Error ) {
+if ( $kalenda_data instanceof WP_Error ) {
 	$kalenda_render_error( __( "Unable to load today's celebrations.", 'kalenda' ) );
 	return;
 }
 
-$events = $day_service->filter( (array) ( $data['litcal'] ?? array() ), $date );
+$kalenda_events = $kalenda_day_service->filter( (array) ( $kalenda_data['litcal'] ?? array() ), $kalenda_date );
 
-$today_label = wp_date( get_option( 'date_format' ), $date->getTimestamp() );
+$kalenda_today_label = wp_date( get_option( 'date_format' ), $kalenda_date->getTimestamp() );
 
-$title     = trim( (string) ( $attributes['title'] ?? '' ) );
-$show_date = (bool) ( $attributes['showDate'] ?? true );
+$kalenda_title     = trim( (string) ( $attributes['title'] ?? '' ) );
+$kalenda_show_date = (bool) ( $attributes['showDate'] ?? true );
 
-if ( '' === $title ) {
-	$title = __( 'Today', 'kalenda' );
+if ( '' === $kalenda_title ) {
+    $kalenda_title = __( 'Today', 'kalenda' );
 }
 
-$style = sanitize_key( $attributes['style'] ?? 'default' );
+$kalenda_style = sanitize_key( $attributes['style'] ?? 'default' );
 
-$allowed_styles = array(
+$kalenda_allowed_styles = array(
 	'default',
 	'minimal',
 );
 
-if ( ! in_array( $style, $allowed_styles, true ) ) {
-	$style = 'default';
+if ( ! in_array( $kalenda_style, $kalenda_allowed_styles, true ) ) {
+    $kalenda_style = 'default';
 }
 ?>
-<div <?php echo get_block_wrapper_attributes( array( 'class' => 'kalenda-day--' . $style ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'kalenda-day--' . $kalenda_style ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
 	<div class="kalenda-day__header">
 	<h2 class="kalenda-day__title">
-		<?php echo esc_html( $title ); ?>
+		<?php echo esc_html( $kalenda_title ); ?>
 	</h2>
-	<?php if ( $show_date ) : ?>
+	<?php if ( $kalenda_show_date ) : ?>
 		<p class="kalenda-day__date">
-			<?php echo esc_html( $today_label ); ?>
+			<?php echo esc_html( $kalenda_today_label ); ?>
 		</p>
 	<?php endif; ?>
 	</div>
 
-	<?php if ( empty( $events ) ) : ?>
+	<?php if ( empty( $kalenda_events ) ) : ?>
 		<p class="kalenda-day__empty">
 			<?php esc_html_e( 'No celebrations found for today.', 'kalenda' ); ?>
 		</p>
 	<?php else : ?>
 		<div class="kalenda-day__events">
 			<ul class="kalenda-day__events-list">
-				<?php foreach ( $events as $event ) : ?>
+				<?php foreach ( $kalenda_events as $kalenda_event ) : ?>
 					<li class="kalenda-day__event">
 						<?php
-						$meta = array();
+                        $kalenda_meta_items = array();
 
-						if ( ! empty( $event['grade_lcl'] ) ) {
-							$meta[] = (string) $event['grade_lcl'];
+						if ( ! empty( $kalenda_event['grade_lcl'] ) ) {
+                            $kalenda_meta_items[] = (string) $kalenda_event['grade_lcl'];
 						}
 
-						if ( ! empty( $event['liturgical_season_lcl'] ) ) {
-							$meta[] = (string) $event['liturgical_season_lcl'];
+						if ( ! empty( $kalenda_event['liturgical_season_lcl'] ) ) {
+                            $kalenda_meta_items[] = (string) $kalenda_event['liturgical_season_lcl'];
 						}
 						?>
-						<h3 class="kalenda-day__name event-color-<?php echo esc_attr( (string) ( $event['color'][0] ?? 'white' ) ); ?>">
-							<?php echo esc_html( (string) ( $event['name'] ?? '' ) ); ?>
+						<h3 class="kalenda-day__name event-color-<?php echo esc_attr( (string) ( $kalenda_event['color'][0] ?? 'white' ) ); ?>">
+							<?php echo esc_html( (string) ( $kalenda_event['name'] ?? '' ) ); ?>
 						</h3>
 
-						<?php if ( 'default' === $style && ! empty( $meta ) ) : ?>
+						<?php if ( 'default' === $kalenda_style && ! empty( $meta ) ) : ?>
 							<p class="kalenda-day__meta">
-								<?php foreach ( $meta as $item ) : ?>
+								<?php foreach ( $kalenda_meta_items as $kalenda_meta_item ) : ?>
 								<span class="kalenda-day__meta-item">
-									<?php echo esc_html( $item ); ?>
+									<?php echo esc_html( $kalenda_meta_item ); ?>
 								</span>
 								<?php endforeach; ?>
 							</p>
