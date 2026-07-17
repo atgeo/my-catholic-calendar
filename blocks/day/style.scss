@@ -1,15 +1,27 @@
+.kalenda-day--default {
+  padding: 1.5rem;
+  border: 1px solid #e7e7e7;
+  border-radius: 0.75rem;
+  background: linear-gradient(to right, #fafafa 0%, #ffffff 75%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 6px 18px rgb(0 0 0 / 0.04);
+}
+
+.kalenda-day__header {
+  margin-block-end: 1.4em;
+}
+
 .kalenda-day__title {
   font-size: 1.8rem;
   font-weight: 600;
-  margin: 0 0 1em;
+  text-transform: uppercase;
+  margin-block-end: 0;
 }
 
 .kalenda-day__empty {
-  font-style: italic;
-  opacity: 0.75;
+  color: #777;
 }
 
-.kalenda-day__events {
+.kalenda-day__events-list {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
@@ -21,39 +33,62 @@
   margin: 0;
 }
 
-.kalenda-day__event + .kalenda-day__event {
-  border-top: 1px solid rgba( 0, 0, 0, 0.1 );
-}
-
 .kalenda-day__name {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
   font-size: 1.6rem;
   font-weight: 600;
   margin: 0;
-  padding: 0.8rem 1.6rem;
+}
+
+.kalenda-day--default .kalenda-day__name {
+  margin-block-end: 0.6em;
+}
+
+.kalenda-day__name::before {
+  content: "";
+  width: 0.5rem;
+  height: 1.5em;
+  flex-shrink: 0;
 }
 
 .kalenda-day__grade {
   text-transform: capitalize;
 }
 
-.event-color-green {
+.kalenda-day__name.event-color-green::before {
   background-color: #186420;
-  color: #fff;
 }
 
-.event-color-white {
-  background-color: #fff;
-  color: #000;
+.kalenda-day__name.event-color-white::before {
+  background-color: #f3f3f3;
 }
 
-.event-color-rose {
+.kalenda-day__name.event-color-rose::before {
   background-color: #f485ba;
 }
 
-.event-color-red {
+.kalenda-day__name.event-color-red::before {
   background-color: #d80707;
 }
 
-.event-color-purple {
+.kalenda-day__name.event-color-purple::before {
   background-color: #800080;
+}
+
+.kalenda-day__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  text-transform: capitalize;
+  color: #777;
+}
+
+.kalenda-day__meta-item + .kalenda-day__meta-item::before {
+  content: "•";
+  display: inline-block;
+  font-size: 0.75em;
+  margin-inline-end: 0.3rem;
+  transform: translateY(-0.05em);
 }

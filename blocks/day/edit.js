@@ -37,6 +37,15 @@ export default function Edit({attributes, setAttributes}) {
                         checked={showDate}
                         onChange={(value) => setAttributes({showDate: value})}
                     />
+                    <SelectControl
+                        label={ __( 'Style', 'kalenda' ) }
+                        value={ attributes.style }
+                        options={ [
+                            { label: __( 'Default', 'kalenda' ), value: 'default' },
+                            { label: __( 'Minimal', 'kalenda' ), value: 'minimal' }
+                        ] }
+                        onChange={ ( style ) => setAttributes( { style } ) }
+                    />
                 </PanelBody>
             </InspectorControls>
 

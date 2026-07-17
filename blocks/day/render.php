@@ -57,19 +57,31 @@ $title     = trim( (string) ( $attributes['title'] ?? '' ) );
 $show_date = (bool) ( $attributes['showDate'] ?? true );
 
 if ( '' === $title ) {
-	$title = __( "Today's Celebrations", 'kalenda' );
+	$title = __( 'Today', 'kalenda' );
+}
+
+$style = sanitize_key( $attributes['style'] ?? 'default' );
+
+$allowed_styles = array(
+	'default',
+	'minimal',
+);
+
+if ( ! in_array( $style, $allowed_styles, true ) ) {
+	$style = 'default';
 }
 ?>
-<div <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'kalenda-day--' . $style ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
+	<div class="kalenda-day__header">
 	<h2 class="kalenda-day__title">
-		<?php
-		echo esc_html( $title );
-
-		if ( $show_date ) {
-			echo ' — ' . esc_html( $today_label );
-		}
-		?>
+		<?php echo esc_html( $title ); ?>
 	</h2>
+	<?php if ( $show_date ) : ?>
+		<p class="kalenda-day__date">
+			<?php echo esc_html( $today_label ); ?>
+		</p>
+	<?php endif; ?>
+	</div>
 
 	<?php if ( empty( $events ) ) : ?>
 		<p class="kalenda-day__empty">
@@ -80,14 +92,30 @@ if ( '' === $title ) {
 			<ul class="kalenda-day__events-list">
 				<?php foreach ( $events as $event ) : ?>
 					<li class="kalenda-day__event">
+						<?php
+						$meta = array();
+
+						if ( ! empty( $event['grade_lcl'] ) ) {
+							$meta[] = (string) $event['grade_lcl'];
+						}
+
+						if ( ! empty( $event['liturgical_season_lcl'] ) ) {
+							$meta[] = (string) $event['liturgical_season_lcl'];
+						}
+						?>
 						<h3 class="kalenda-day__name event-color-<?php echo esc_attr( (string) ( $event['color'][0] ?? 'white' ) ); ?>">
 							<?php echo esc_html( (string) ( $event['name'] ?? '' ) ); ?>
-							<?php if ( ! empty( $event['grade'] ) ) : ?>
-								<span class="kalenda-day__grade">
-									(<?php echo esc_html( (string) ( $event['grade_lcl'] ?? '' ) ); ?>)
-								</span>
-							<?php endif; ?>
 						</h3>
+
+						<?php if ( 'default' === $style && ! empty( $meta ) ) : ?>
+							<p class="kalenda-day__meta">
+								<?php foreach ( $meta as $item ) : ?>
+								<span class="kalenda-day__meta-item">
+									<?php echo esc_html( $item ); ?>
+								</span>
+								<?php endforeach; ?>
+							</p>
+						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
