@@ -107,7 +107,7 @@ if ( ! in_array( $kalenda_style, $kalenda_allowed_styles, true ) ) {
 							<?php echo esc_html( (string) ( $kalenda_event['name'] ?? '' ) ); ?>
 						</h3>
 
-						<?php if ( 'default' === $kalenda_style && ! empty( $meta ) ) : ?>
+						<?php if ( 'default' === $kalenda_style && ! empty( $kalenda_meta_items ) ) : ?>
 							<p class="kalenda-day__meta">
 								<?php foreach ( $kalenda_meta_items as $kalenda_meta_item ) : ?>
 								<span class="kalenda-day__meta-item">
