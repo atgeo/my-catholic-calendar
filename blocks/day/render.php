@@ -53,11 +53,11 @@ $kalenda_events = $kalenda_day_service->filter( (array) ( $kalenda_data['litcal'
 
 $kalenda_today_label = wp_date( get_option( 'date_format' ), $kalenda_date->getTimestamp() );
 
-$kalenda_title = sanitize_text_field( (string) ( $attributes['title'] ?? '' ) );
+$kalenda_title     = sanitize_text_field( (string) ( $attributes['title'] ?? '' ) );
 $kalenda_show_date = (bool) ( $attributes['showDate'] ?? true );
 
 if ( '' === $kalenda_title ) {
-    $kalenda_title = __( 'Today', 'kalenda' );
+	$kalenda_title = __( 'Today', 'kalenda' );
 }
 
 $kalenda_style = sanitize_key( $attributes['style'] ?? 'default' );
@@ -68,7 +68,7 @@ $kalenda_allowed_styles = array(
 );
 
 if ( ! in_array( $kalenda_style, $kalenda_allowed_styles, true ) ) {
-    $kalenda_style = 'default';
+	$kalenda_style = 'default';
 }
 ?>
 <div <?php echo get_block_wrapper_attributes( array( 'class' => 'kalenda-day--' . $kalenda_style ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
@@ -93,14 +93,14 @@ if ( ! in_array( $kalenda_style, $kalenda_allowed_styles, true ) ) {
 				<?php foreach ( $kalenda_events as $kalenda_event ) : ?>
 					<li class="kalenda-day__event">
 						<?php
-                        $kalenda_meta_items = array();
+						$kalenda_meta_items = array();
 
 						if ( ! empty( $kalenda_event['grade_lcl'] ) ) {
-                            $kalenda_meta_items[] = (string) $kalenda_event['grade_lcl'];
+							$kalenda_meta_items[] = (string) $kalenda_event['grade_lcl'];
 						}
 
 						if ( ! empty( $kalenda_event['liturgical_season_lcl'] ) ) {
-                            $kalenda_meta_items[] = (string) $kalenda_event['liturgical_season_lcl'];
+							$kalenda_meta_items[] = (string) $kalenda_event['liturgical_season_lcl'];
 						}
 						?>
 						<h3 class="kalenda-day__name event-color-<?php echo esc_attr( (string) ( $kalenda_event['color'][0] ?? 'white' ) ); ?>">
