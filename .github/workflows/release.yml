@@ -1,0 +1,68 @@
+name: Build Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to package'
+        required: true
+        type: string
+
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: 'none'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-progress --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build blocks
+        run: npm run build
+
+      - name: Create plugin ZIP
+        run: |
+          # Create clean plugin directory
+          mkdir -p plugin-build/kalenda
+
+          # Copy files while respecting .distignore
+          rsync -a --exclude-from=.distignore ./ plugin-build/kalenda/
+
+          # Create zip
+          cd plugin-build
+          zip -r ../kalenda.zip kalenda
+          cd ..
+
+      - name: List ZIP contents
+        run: unzip -l kalenda.zip
+
+      - name: Upload plugin ZIP
+        uses: actions/upload-artifact@v7
+        with:
+          name: kalenda-plugin-${{ inputs.tag || github.ref_name }}
+          path: kalenda.zip
+          retention-days: 14
+          if-no-files-found: error
