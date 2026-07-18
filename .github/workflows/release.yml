@@ -29,7 +29,13 @@ jobs:
           coverage: 'none'
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --no-progress --prefer-dist
+        run: |
+          composer install \
+            --no-dev \
+            --no-progress \
+            --no-interaction \
+            --prefer-dist \
+            --optimize-autoloader
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -45,19 +51,20 @@ jobs:
 
       - name: Prepare plugin directory
         run: |
-          # Create clean plugin directory
-          mkdir -p plugin-build/kalenda
+          # Build outside the checked-out repo ($RUNNER_TEMP, not ./) so
+          # rsync never scans the directory it's about to create into.
+          mkdir -p "$RUNNER_TEMP/plugin-build/kalenda"
+          rsync -a --exclude-from=.distignore ./ "$RUNNER_TEMP/plugin-build/kalenda/"
+          cd "$RUNNER_TEMP/plugin-build"
+          zip -r "$GITHUB_WORKSPACE/kalenda.zip" kalenda
 
-          # Copy files while respecting .distignore
-          rsync -a --exclude-from=.distignore ./ plugin-build/kalenda/
+      - name: List ZIP contents
+        run: unzip -l kalenda.zip
 
-      - name: List package contents
-        run: find plugin-build/kalenda -type f | sort
-
-      - name: Upload plugin package
+      - name: Upload plugin ZIP
         uses: actions/upload-artifact@v7
         with:
           name: kalenda-plugin-${{ inputs.tag || github.ref_name }}
-          path: plugin-build/kalenda
+          path: kalenda.zip
           retention-days: 14
           if-no-files-found: error
