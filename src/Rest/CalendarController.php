@@ -2,28 +2,28 @@
 /**
  * Calendar REST endpoint.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Rest;
+namespace MyCatholicCalendar\Rest;
 
 use DateTimeImmutable;
 use Exception as DateParseException;
 use InvalidArgumentException;
-use Kalenda\Api\CalendarQuery;
-use Kalenda\Contracts\RouteProvider;
-use Kalenda\Repositories\CalendarRepository;
-use Kalenda\Services\DayService;
-use Kalenda\Support\Options;
+use MyCatholicCalendar\Api\CalendarQuery;
+use MyCatholicCalendar\Contracts\RouteProvider;
+use MyCatholicCalendar\Repositories\CalendarRepository;
+use MyCatholicCalendar\Services\DayService;
+use MyCatholicCalendar\Support\Options;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * Serves `GET kalenda/v1/calendar`.
+ * Serves `GET my-catholic-calendar/v1/calendar`.
  *
  * Validates request arguments against the schema and the live metadata
  * allowlist, delegates to the gateway (which caches), and translates the two
@@ -200,7 +200,7 @@ final class CalendarController implements RouteProvider {
 		try {
 			$date = $this->resolve_date( $request );
 		} catch ( DateParseException $e ) {
-			return $this->invalid_param_error( __( 'The requested date could not be parsed.', 'kalenda' ) );
+			return $this->invalid_param_error( __( 'The requested date could not be parsed.', 'my-catholic-calendar' ) );
 		}
 
 		try {

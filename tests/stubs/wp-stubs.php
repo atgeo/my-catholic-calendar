@@ -8,7 +8,7 @@
  * CalendarController relies on (flat param storage, no method/priority
  * merging) — test infrastructure only, never autoloaded or shipped from src/.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );

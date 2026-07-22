@@ -1,36 +1,34 @@
-=== Kalenda ===
+=== My Catholic Calendar ===
 Contributors: atgeo
 Tags: catholic, liturgical calendar, liturgy, calendar, church
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.1
 Stable tag: 0.1.0
-License: GPL-2.0-or-later
+License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Display the Catholic liturgical calendar on WordPress using a native block, powered by the LitCal API.
 
 == Description ==
 
-Kalenda brings the Catholic liturgical calendar to WordPress. It uses the open LitCal API to show Catholic liturgical celebrations, including their rank and liturgical colour, for the General Roman Calendar.
+My Catholic Calendar brings the Catholic liturgical calendar to WordPress. It uses the open LitCal API to show Catholic liturgical celebrations, including their rank and liturgical colour, for the General Roman Calendar.
 
-Kalenda is built for modern WordPress:
+* **Day block** — shows today's liturgical celebration(s).
 
-* **Kalenda Day block** — shows today's liturgical celebration(s). Server-rendered for maximum compatibility and fast page loads. Works with any theme. (A full month/grid calendar block is planned for a future release.)
-* **Cached REST API** (`kalenda/v1`) — endpoints for `/calendar`, `/day`, and `/calendars` so your themes and plugins can access liturgical data without hitting the upstream service directly.
-* **Clean, standards-based code** — follows PSR-4 autoloading, WordPress Coding Standards, and includes static analysis.
+* More blocks coming soon!
 
 Liturgical data is provided by the [LitCal project](https://litcal.johnromanodorazio.com/) by John Romano D'Orazio.
 
 == Installation ==
 
-1. Upload the `kalenda` folder to `/wp-content/plugins/`, or install it via the **Plugins** screen in WordPress.
+1. Upload the `my-catholic-calendar` folder to `/wp-content/plugins/`, or install it via the **Plugins** screen in WordPress.
 2. Activate the plugin through the **Plugins** menu.
-3. Add the **Kalenda Day** block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
+3. Add the Day block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
 
 == External Services ==
 
-Kalenda connects to the public LitCal API to fetch Catholic liturgical calendar data.
+My Catholic Calendar connects to the public LitCal API to fetch Catholic liturgical calendar data.
 
 When data is requested, the plugin sends only:
 * Liturgical year
@@ -47,11 +45,11 @@ No personal information, user accounts, or site content is ever transmitted. Req
 
 = Does this require an account or API key? =
 
-No. Kalenda uses the public LitCal API. All responses are cached in WordPress, so pages load quickly and external requests are minimized.
+No. All responses are cached in WordPress, so pages load quickly, and external requests are minimized.
 
 = Which calendars are supported? =
 
-Kalenda currently supports the General Roman Calendar.
+We currently support the General Roman Calendar.
 
 = Does it work with my theme? =
 
@@ -61,5 +59,5 @@ Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it 
 
 = 0.1.0 =
 * Initial release.
-* Added the Kalenda Day block for displaying today's liturgical celebrations.
+* Added the Day block for displaying today's liturgical celebrations.
 * Added REST API endpoints for liturgical calendar data.

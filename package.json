@@ -1,5 +1,5 @@
 {
-	"name": "kalenda",
+	"name": "my-catholic-calendar",
 	"version": "0.1.0",
 	"description": "Displays the Catholic liturgical calendar on any WordPress theme, powered by the LitCal API.",
 	"author": "Georges Kmeid",
@@ -12,10 +12,10 @@
 		"liturgical-calendar",
 		"catholic"
 	],
-	"homepage": "https://github.com/atgeo/kalenda",
+	"homepage": "https://github.com/atgeo/my-catholic-calendar",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/atgeo/kalenda.git"
+		"url": "https://github.com/atgeo/my-catholic-calendar.git"
 	},
 	"engines": {
 		"node": ">=20",
@@ -30,7 +30,7 @@
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"makepot": "wp-scripts i18n make-pot . languages/kalenda.pot",
+		"makepot": "wp-scripts i18n make-pot . languages/my-catholic-calendar.pot",
 		"env": "wp-env",
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop"

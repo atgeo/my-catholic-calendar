@@ -2,12 +2,12 @@
 /**
  * Cache contract.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Contracts;
+namespace MyCatholicCalendar\Contracts;
 
 /**
  * A minimal key/value cache.

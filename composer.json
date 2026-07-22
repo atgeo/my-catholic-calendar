@@ -1,5 +1,5 @@
 {
-    "name": "atgeo/kalenda",
+    "name": "atgeo/my-catholic-calendar",
     "description": "A modern WordPress plugin that displays the Catholic liturgical calendar, powered by the LitCal API.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
@@ -18,8 +18,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/atgeo/kalenda/issues",
-        "source": "https://github.com/atgeo/kalenda"
+        "issues": "https://github.com/atgeo/my-catholic-calendar/issues",
+        "source": "https://github.com/atgeo/my-catholic-calendar"
     },
     "require": {
         "php": ">=8.1",
@@ -37,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Kalenda\\": "src/"
+            "MyCatholicCalendar\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Kalenda\\Tests\\": "tests/phpunit/"
+            "MyCatholicCalendar\\Tests\\": "tests/phpunit/"
         }
     },
     "config": {

@@ -2,12 +2,12 @@
 /**
  * Calendar query value object.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Api;
+namespace MyCatholicCalendar\Api;
 
 use InvalidArgumentException;
 
@@ -112,7 +112,7 @@ final class CalendarQuery {
 	 * @return string
 	 */
 	public function cache_key(): string {
-		return 'kalenda_cal_' . md5(
+		return 'mcc_cal_' . md5(
 			implode(
 				'|',
 				array(

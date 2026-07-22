@@ -2,22 +2,22 @@
 /**
  * Metadata REST endpoint.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Rest;
+namespace MyCatholicCalendar\Rest;
 
-use Kalenda\Contracts\LitCalGateway;
-use Kalenda\Contracts\RouteProvider;
-use Kalenda\Exceptions\GatewayException;
+use MyCatholicCalendar\Contracts\LitCalGateway;
+use MyCatholicCalendar\Contracts\RouteProvider;
+use MyCatholicCalendar\Exceptions\GatewayException;
 use WP_Error;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * Serves `GET kalenda/v1/calendars`.
+ * Serves `GET my-catholic-calendar/v1/calendars`.
 
  * Returns the LitCal metadata describing the available national and diocesan
  * calendars. The gateway handles caching; this controller only exposes the
@@ -59,8 +59,8 @@ final class MetadataController implements RouteProvider {
 			$data = $this->gateway->metadata();
 		} catch ( GatewayException $e ) {
 			return new WP_Error(
-				'kalenda_upstream_unavailable',
-				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
+				'mcc_upstream_unavailable',
+				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'my-catholic-calendar' ),
 				array( 'status' => 502 )
 			);
 		}

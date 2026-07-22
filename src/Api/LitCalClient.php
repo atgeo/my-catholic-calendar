@@ -2,18 +2,18 @@
 /**
  * LitCal gateway implementation.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Api;
+namespace MyCatholicCalendar\Api;
 
-use Kalenda\Contracts\Cache;
-use Kalenda\Contracts\LitCalGateway;
-use Kalenda\Exceptions\GatewayException;
-use Kalenda\Cache\TransientCache;
-use Kalenda\Support\Options;
+use MyCatholicCalendar\Contracts\Cache;
+use MyCatholicCalendar\Contracts\LitCalGateway;
+use MyCatholicCalendar\Exceptions\GatewayException;
+use MyCatholicCalendar\Cache\TransientCache;
+use MyCatholicCalendar\Support\Options;
 use LiturgicalCalendar\Components\ApiClient;
 use LiturgicalCalendar\Components\Http\HttpClientInterface;
 use Throwable;
@@ -36,7 +36,7 @@ final class LitCalClient implements LitCalGateway {
 	/**
 	 * Cache key for the metadata index.
 	 */
-	private const METADATA_KEY = 'kalenda_metadata';
+	private const METADATA_KEY = 'my_catholic_calendar_metadata';
 
 	/**
 	 * Wire the gateway's collaborators.
@@ -65,7 +65,7 @@ final class LitCalClient implements LitCalGateway {
 		 *
 		 * @param string $api_url Default API base URL.
 		 */
-		$api_url = (string) apply_filters( 'kalenda_api_url', self::DEFAULT_API_URL );
+		$api_url = (string) apply_filters( 'my_catholic_calendar_api_url', self::DEFAULT_API_URL );
 
 		return new self(
 			new WpHttpClient(),

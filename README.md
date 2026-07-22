@@ -1,14 +1,14 @@
-# Kalenda
+# My Catholic Calendar
 
 A modern WordPress plugin that displays the **Catholic liturgical calendar** on any theme, powered by the [LitCal API](https://litcal.johnromanodorazio.com/).
 
-![Kalenda Day block](.github/images/kalenda-day-frontend.png)
+![Day block](.github/images/day-frontend.png)
 
 > ⚠️ **Status:** early development (`0.1.0`). The REST API and the shipped block work, but the public contract isn't stable yet.
 
 ## Features
 
-- 🕯️ **Kalenda Day block** — displays today's Catholic liturgical celebration(s), including name, rank, and liturgical colour. Fully server-rendered (`render.php`) for compatibility with any theme. (A month/grid calendar block is planned for a future release.)
+- 🕯️ **Day block** — displays today's Catholic liturgical celebration(s), including name, rank, and liturgical color. Fully server-rendered (`render.php`) for compatibility with any theme. (A month/grid calendar block is planned for a future release.)
 - 🌍 **General Roman Calendar** — currently supports the General Roman Calendar. Support for national and diocesan calendars is planned for future releases.
 - 🔌 **REST API** — a cached `kalenda/v1` namespace (`/calendar`, `/day`, `/calendars`) for accessing liturgical data. The browser never calls LitCal directly.
 - ⚡ **Caching** — uses WordPress transients to reduce external API requests and improve performance.

@@ -2,12 +2,12 @@
 /**
  * Day service.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Services;
+namespace MyCatholicCalendar\Services;
 
 use DateTimeImmutable;
 

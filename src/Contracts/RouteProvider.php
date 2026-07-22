@@ -2,12 +2,12 @@
 /**
  * REST route provider contract.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Contracts;
+namespace MyCatholicCalendar\Contracts;
 
 /**
  * A component that registers its own REST API routes.

@@ -2,21 +2,21 @@
 /**
  * CalendarController tests.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Tests\Rest;
+namespace MyCatholicCalendar\Tests\Rest;
 
 use Brain\Monkey\Functions;
-use Kalenda\Exceptions\GatewayException;
-use Kalenda\Repositories\CalendarRepository;
-use Kalenda\Rest\CalendarController;
-use Kalenda\Services\DayService;
-use Kalenda\Support\Options;
-use Kalenda\Tests\Fakes\FakeLitCalGateway;
-use Kalenda\Tests\TestCase;
+use MyCatholicCalendar\Exceptions\GatewayException;
+use MyCatholicCalendar\Repositories\CalendarRepository;
+use MyCatholicCalendar\Rest\CalendarController;
+use MyCatholicCalendar\Services\DayService;
+use MyCatholicCalendar\Support\Options;
+use MyCatholicCalendar\Tests\Fakes\FakeLitCalGateway;
+use MyCatholicCalendar\Tests\TestCase;
 use WP_Error;
 use WP_REST_Request;
 
@@ -115,7 +115,7 @@ final class CalendarControllerTest extends TestCase {
 		);
 
 		self::assertInstanceOf( WP_Error::class, $response );
-		self::assertSame( 'kalenda_upstream_unavailable', $response->get_error_code() );
+		self::assertSame( 'mcc_upstream_unavailable', $response->get_error_code() );
 		self::assertSame( 502, $response->get_error_data()['status'] );
 		self::assertStringNotContainsString( 'boom', $response->get_error_message() );
 	}

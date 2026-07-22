@@ -2,12 +2,12 @@
 /**
  * Registrable service contract.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Contracts;
+namespace MyCatholicCalendar\Contracts;
 
 /**
  * A service that hooks itself into WordPress.

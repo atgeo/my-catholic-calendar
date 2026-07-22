@@ -3,9 +3,9 @@ parameters:
     phpVersion: 80100
     paths:
         - src
-    # kalenda.php defines the plugin constants (KALENDA_FILE, KALENDA_PATH, …)
+    # my-catholic-calendar.php defines the plugin constants (MY_CATHOLIC_CALENDAR_FILE, MY_CATHOLIC_CALENDAR_PATH, …)
     # referenced from src/; scanning it lets PHPStan resolve them.
     scanFiles:
-        - kalenda.php
+        - my-catholic-calendar.php
     # WordPress core stubs are provided by szepeviktor/phpstan-wordpress,
     # auto-registered via phpstan/extension-installer.

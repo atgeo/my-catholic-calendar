@@ -2,17 +2,17 @@
 /**
  * Calendar repository.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Repositories;
+namespace MyCatholicCalendar\Repositories;
 
-use Kalenda\Api\CalendarQuery;
-use Kalenda\Contracts\LitCalGateway;
-use Kalenda\Exceptions\GatewayException;
-use Kalenda\Rest\MetadataAllowlist;
+use MyCatholicCalendar\Api\CalendarQuery;
+use MyCatholicCalendar\Contracts\LitCalGateway;
+use MyCatholicCalendar\Exceptions\GatewayException;
+use MyCatholicCalendar\Rest\MetadataAllowlist;
 use WP_Error;
 
 /**
@@ -75,7 +75,7 @@ final class CalendarRepository {
 			return $this->invalid_param_error(
 				sprintf(
 				/* translators: 1: calendar type (nation or diocese), 2: requested id. */
-					__( 'Unknown %1$s calendar: %2$s.', 'kalenda' ),
+					__( 'Unknown %1$s calendar: %2$s.', 'my-catholic-calendar' ),
 					$query->type,
 					(string) $query->calendar_id
 				)
@@ -86,7 +86,7 @@ final class CalendarRepository {
 			return $this->invalid_param_error(
 				sprintf(
 				/* translators: %s: the unsupported locale code. */
-					__( 'Unsupported locale for this calendar: %s', 'kalenda' ),
+					__( 'Unsupported locale for this calendar: %s', 'my-catholic-calendar' ),
 					$query->locale
 				)
 			);
@@ -116,8 +116,8 @@ final class CalendarRepository {
 	 */
 	private function upstream_error(): WP_Error {
 		return new WP_Error(
-			'kalenda_upstream_unavailable',
-			__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'kalenda' ),
+			'mcc_upstream_unavailable',
+			__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'my-catholic-calendar' ),
 			array( 'status' => 502 )
 		);
 	}

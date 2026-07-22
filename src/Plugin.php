@@ -2,23 +2,23 @@
 /**
  * Plugin container and bootstrap.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda;
+namespace MyCatholicCalendar;
 
-use Kalenda\Api\LitCalClient;
-use Kalenda\Blocks\BlockRegistrar;
-use Kalenda\Contracts\LitCalGateway;
-use Kalenda\Contracts\Registrable;
-use Kalenda\Repositories\CalendarRepository;
-use Kalenda\Rest\CalendarController;
-use Kalenda\Rest\MetadataController;
-use Kalenda\Rest\RestRegistrar;
-use Kalenda\Services\DayService;
-use Kalenda\Support\Options;
+use MyCatholicCalendar\Api\LitCalClient;
+use MyCatholicCalendar\Blocks\BlockRegistrar;
+use MyCatholicCalendar\Contracts\LitCalGateway;
+use MyCatholicCalendar\Contracts\Registrable;
+use MyCatholicCalendar\Repositories\CalendarRepository;
+use MyCatholicCalendar\Rest\CalendarController;
+use MyCatholicCalendar\Rest\MetadataController;
+use MyCatholicCalendar\Rest\RestRegistrar;
+use MyCatholicCalendar\Services\DayService;
+use MyCatholicCalendar\Support\Options;
 
 /**
  * Central plugin container.
@@ -127,7 +127,7 @@ final class Plugin {
 	 * Build the list of services to register.
 	 *
 	 * Later phases append their services here (REST controller, settings page,
-	 * block registrar, shortcode). The `kalenda_services` filter lets add-ons
+	 * block registrar, shortcode). The `my_catholic_calendar_services` filter lets add-ons
 	 * extend the plugin without editing core.
 	 *
 	 * @return Registrable[]
@@ -152,7 +152,7 @@ final class Plugin {
 		 *
 		 * @param Registrable[] $services List of registrable services.
 		 */
-		$services = (array) apply_filters( 'kalenda_services', $services );
+		$services = (array) apply_filters( 'my_catholic_calendar_services', $services );
 
 		// A third-party filter callback may return non-conforming values, so the
 		// instanceof guard is genuinely needed even though the docblock claims otherwise.

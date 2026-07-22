@@ -2,10 +2,10 @@
 /**
  * Uninstall routine.
  *
- * Runs when the user deletes Kalenda from the WordPress admin. Removes the
+ * Runs when the user deletes MyCatholicCalendar from the WordPress admin. Removes the
  * plugin's stored options and any cached liturgical data (transients).
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
@@ -18,31 +18,31 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 /**
  * Remove all plugin data for a single site.
  */
-function kalenda_uninstall_site(): void {
+function my_catholic_calendar_uninstall_site(): void {
 	global $wpdb;
 
-	delete_option( 'kalenda_settings' );
+	delete_option( 'my_catholic_calendar_settings' );
 
 	// Delete every transient (and its timeout) created by the plugin.
-	// Transient keys are prefixed with "kalenda_"; object caches are flushed
+	// Transient keys are prefixed with "my_catholic_calendar_"; object caches are flushed
 	// separately below since they are not stored in the options table.
-	$like = $wpdb->esc_like( '_transient_kalenda_' ) . '%';
+	$like = $wpdb->esc_like( '_transient_my_catholic_calendar_' ) . '%';
 	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
-	$like_timeout = $wpdb->esc_like( '_transient_timeout_kalenda_' ) . '%';
+	$like_timeout = $wpdb->esc_like( '_transient_timeout_my_catholic_calendar_' ) . '%';
 	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like_timeout ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 	wp_cache_flush();
 }
 
 if ( is_multisite() ) {
-	$kalenda_site_ids = get_sites( array( 'fields' => 'ids' ) );
+	$my_catholic_calendar_site_ids = get_sites( array( 'fields' => 'ids' ) );
 
-	foreach ( $kalenda_site_ids as $kalenda_site_id ) {
-		switch_to_blog( (int) $kalenda_site_id );
-		kalenda_uninstall_site();
+	foreach ( $my_catholic_calendar_site_ids as $my_catholic_calendar_site_id ) {
+		switch_to_blog( (int) $my_catholic_calendar_site_id );
+		my_catholic_calendar_uninstall_site();
 		restore_current_blog();
 	}
 } else {
-	kalenda_uninstall_site();
+	mcc_uninstall_site();
 }

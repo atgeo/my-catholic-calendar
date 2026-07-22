@@ -2,15 +2,15 @@
 /**
  * Liturgical calendar gateway contract.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Contracts;
+namespace MyCatholicCalendar\Contracts;
 
-use Kalenda\Api\CalendarQuery;
-use Kalenda\Exceptions\GatewayException;
+use MyCatholicCalendar\Api\CalendarQuery;
+use MyCatholicCalendar\Exceptions\GatewayException;
 
 /**
  * The single boundary between the plugin and the liturgical calendar data

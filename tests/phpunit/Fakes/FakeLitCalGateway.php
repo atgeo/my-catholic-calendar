@@ -2,15 +2,15 @@
 /**
  * Fake LitCal gateway.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Tests\Fakes;
+namespace MyCatholicCalendar\Tests\Fakes;
 
-use Kalenda\Api\CalendarQuery;
-use Kalenda\Contracts\LitCalGateway;
+use MyCatholicCalendar\Api\CalendarQuery;
+use MyCatholicCalendar\Contracts\LitCalGateway;
 use Throwable;
 
 /**

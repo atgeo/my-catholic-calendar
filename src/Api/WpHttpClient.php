@@ -2,12 +2,12 @@
 /**
  * WordPress HTTP client adapter.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Api;
+namespace MyCatholicCalendar\Api;
 
 use LiturgicalCalendar\Components\Http\HttpClientInterface;
 use LiturgicalCalendar\Components\Http\HttpException;
@@ -87,7 +87,7 @@ final class WpHttpClient implements HttpClientInterface {
 			'method'     => $method,
 			'timeout'    => $this->timeout,
 			'headers'    => $headers,
-			'user-agent' => 'Kalenda/' . \Kalenda\KALENDA_VERSION . '; ' . home_url( '/' ),
+			'user-agent' => 'MyCatholicCalendar/' . \MyCatholicCalendar\MY_CATHOLIC_CALENDAR_VERSION . '; ' . home_url( '/' ),
 		);
 
 		if ( null !== $body ) {

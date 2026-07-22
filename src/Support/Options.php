@@ -2,25 +2,25 @@
 /**
  * Settings accessor.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Support;
+namespace MyCatholicCalendar\Support;
 
-use Kalenda\Api\CalendarQuery;
+use MyCatholicCalendar\Api\CalendarQuery;
 
 /**
  * Typed, read-only accessor over the plugin's stored settings.
  *
- * A single option (`kalenda_settings`) holds all configuration; this class
+ * A single option (`mcc_settings`) holds all configuration; this class
  * merges it with defaults and exposes each value with a guaranteed type, so
  * callers never deal with raw option arrays or missing keys.
  */
 final class Options {
 
-	public const OPTION = 'kalenda_settings';
+	public const OPTION = 'mcc_settings';
 
 	/**
 	 * Resolved settings, merged with defaults.

@@ -2,12 +2,12 @@
 /**
  * Base test case.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Tests;
+namespace MyCatholicCalendar\Tests;
 
 use Brain\Monkey;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as PolyfillTestCase;

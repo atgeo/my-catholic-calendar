@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Kalenda">
-	<description>Coding standards for the Kalenda plugin.</description>
+<ruleset name="My Catholic Calendar">
+	<description>Coding standards for the My Catholic Calendar plugin.</description>
 
 	<!-- Scan the whole plugin by default. -->
 	<file>.</file>
@@ -42,9 +42,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="Kalenda"/>
-				<element value="kalenda"/>
-				<element value="KALENDA"/>
+			    <element value="MyCatholicCalendar"/>
+				<element value="my_catholic_calendar"/>
+				<element value="MY_CATHOLIC_CALENDAR"/>
 			</property>
 		</properties>
 		<!--
@@ -74,7 +74,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="kalenda"/>
+				<element value="my-catholic-calendar"/>
 			</property>
 		</properties>
 	</rule>

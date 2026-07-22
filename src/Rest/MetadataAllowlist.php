@@ -2,14 +2,14 @@
 /**
  * Metadata-backed calendar allowlist.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Rest;
+namespace MyCatholicCalendar\Rest;
 
-use Kalenda\Api\CalendarQuery;
+use MyCatholicCalendar\Api\CalendarQuery;
 
 /**
  * Validates calendar ids and locales against the live `/calendars` metadata.
@@ -49,7 +49,7 @@ final class MetadataAllowlist {
 	/**
 	 * Wrap a metadata response.
 	 *
-	 * @param array<string,mixed> $metadata The {@see \Kalenda\Contracts\LitCalGateway::metadata()} response.
+	 * @param array<string,mixed> $metadata The {@see \MyCatholicCalendar\Contracts\LitCalGateway::metadata()} response.
 	 */
 	public function __construct(
 		private readonly array $metadata

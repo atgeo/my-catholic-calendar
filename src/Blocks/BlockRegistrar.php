@@ -2,14 +2,14 @@
 /**
  * Block registrar.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Blocks;
+namespace MyCatholicCalendar\Blocks;
 
-use Kalenda\Contracts\Registrable;
+use MyCatholicCalendar\Contracts\Registrable;
 
 /**
  * Registers Kalenda's Gutenberg blocks.
@@ -28,7 +28,7 @@ final class BlockRegistrar implements Registrable {
 	 * Register every Kalenda block.
 	 */
 	public function register_blocks(): void {
-		register_block_type( constant( 'Kalenda\\KALENDA_PATH' ) . 'build/day' );
+		register_block_type( constant( 'MyCatholicCalendar\\MY_CATHOLIC_CALENDAR_PATH' ) . 'build/day' );
 	}
 
 	/**
@@ -40,8 +40,8 @@ final class BlockRegistrar implements Registrable {
 	 */
 	public function register_category( array $categories ): array {
 		$categories[] = array(
-			'slug'  => 'kalenda',
-			'title' => __( 'Kalenda', 'kalenda' ),
+			'slug'  => 'my-catholic-calendar',
+			'title' => __( 'My Catholic Calendar', 'my-catholic-calendar' ),
 			'icon'  => null,
 		);
 

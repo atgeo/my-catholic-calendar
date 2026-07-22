@@ -2,14 +2,14 @@
 /**
  * Transient-backed cache.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Cache;
+namespace MyCatholicCalendar\Cache;
 
-use Kalenda\Contracts\Cache;
+use MyCatholicCalendar\Contracts\Cache;
 
 /**
  * Caches values in WordPress transients.
@@ -18,7 +18,7 @@ use Kalenda\Contracts\Cache;
  * when one is available, and fall back to the options table otherwise, so this
  * is both fast on managed hosts and dependency-free on shared hosting.
  *
- * All keys are expected to carry the plugin's `kalenda_` prefix so that
+ * All keys are expected to carry the plugin's `mcc_` prefix so that
  * {@see flush()} and the uninstall routine can find them.
  */
 final class TransientCache implements Cache {
@@ -58,15 +58,15 @@ final class TransientCache implements Cache {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * Removes every `kalenda_`-prefixed transient. WordPress has no API to
+	 * Removes every `mcc_`-prefixed transient. WordPress has no API to
 	 * delete transients by prefix, so a direct query is required; the object
 	 * cache is flushed separately for hosts that keep transients out of the DB.
 	 */
 	public function flush(): void {
 		global $wpdb;
 
-		$like         = $wpdb->esc_like( '_transient_kalenda_' ) . '%';
-		$like_timeout = $wpdb->esc_like( '_transient_timeout_kalenda_' ) . '%';
+		$like         = $wpdb->esc_like( '_transient_mcc_' ) . '%';
+		$like_timeout = $wpdb->esc_like( '_transient_timeout_mcc_' ) . '%';
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery
 		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like ) );

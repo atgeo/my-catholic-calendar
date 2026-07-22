@@ -2,15 +2,15 @@
 /**
  * REST route registrar.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Rest;
+namespace MyCatholicCalendar\Rest;
 
-use Kalenda\Contracts\Registrable;
-use Kalenda\Contracts\RouteProvider;
+use MyCatholicCalendar\Contracts\Registrable;
+use MyCatholicCalendar\Contracts\RouteProvider;
 
 /**
  * Registers the plugin's REST API on `rest_api_init`.
@@ -23,9 +23,9 @@ use Kalenda\Contracts\RouteProvider;
 final class RestRegistrar implements Registrable {
 
 	/**
-	 * The REST namespace all Kalenda routes live under.
+	 * The REST namespace all MyCatholicCalendar routes live under.
 	 */
-	public const REST_NAMESPACE = 'kalenda/v1';
+	public const REST_NAMESPACE = 'my-catholic-calendar/v1';
 
 	/**
 	 * Endpoint controllers to register.

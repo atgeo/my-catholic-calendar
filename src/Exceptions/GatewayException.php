@@ -2,12 +2,12 @@
 /**
  * Gateway exception.
  *
- * @package Kalenda
+ * @package MyCatholicCalendar
  */
 
 declare( strict_types=1 );
 
-namespace Kalenda\Exceptions;
+namespace MyCatholicCalendar\Exceptions;
 
 use RuntimeException;
 
