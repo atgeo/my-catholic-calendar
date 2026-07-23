@@ -59,7 +59,7 @@ We currently support the General Roman Calendar.
 
 = Does it work with my theme? =
 
-Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it works in both block themes and classic themes. Liturgical colours are displayed automatically based on the celebration.
+Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it works in both block themes and classic themes. Liturgical colors are displayed automatically based on the celebration.
 
 == Changelog ==
 
