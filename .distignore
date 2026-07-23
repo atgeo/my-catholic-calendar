@@ -22,3 +22,8 @@
 /package-lock.json
 /README.md
 /CLAUDE.md
+# Exclude vendor docs and editor metadata
+/vendor/**/README*
+/vendor/**/CHANGELOG*
+/vendor/**/CONTRIBUTING*
+/.DS_Store
