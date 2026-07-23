@@ -10,11 +10,11 @@ export default function Edit({attributes, setAttributes}) {
         <>
             <InspectorControls>
                 <PanelBody
-                    title={__('Settings', 'kalenda')}
+                    title={__('Settings', 'my-catholic-calendar')}
                     initialOpen={true}
                 >
                     <SelectControl
-                        label={__('Language', 'kalenda')}
+                        label={__('Language', 'my-catholic-calendar')}
                         value={locale}
                         options={[
                             {label: 'Dutch', value: 'nl'},
@@ -28,21 +28,21 @@ export default function Edit({attributes, setAttributes}) {
                         }
                     />
                     <TextControl
-                        label={__('Heading', 'kalenda')}
+                        label={__('Heading', 'my-catholic-calendar')}
                         value={title}
                         onChange={(value) => setAttributes({title: value})}
                     />
                     <ToggleControl
-                        label={__('Show date', 'kalenda')}
+                        label={__('Show date', 'my-catholic-calendar')}
                         checked={showDate}
                         onChange={(value) => setAttributes({showDate: value})}
                     />
                     <SelectControl
-                        label={ __( 'Style', 'kalenda' ) }
+                        label={ __( 'Style', 'my-catholic-calendar' ) }
                         value={ attributes.style }
                         options={ [
-                            { label: __( 'Default', 'kalenda' ), value: 'default' },
-                            { label: __( 'Minimal', 'kalenda' ), value: 'minimal' }
+                            { label: __( 'Default', 'my-catholic-calendar' ), value: 'default' },
+                            { label: __( 'Minimal', 'my-catholic-calendar' ), value: 'minimal' }
                         ] }
                         onChange={ ( style ) => setAttributes( { style } ) }
                     />
@@ -51,7 +51,7 @@ export default function Edit({attributes, setAttributes}) {
 
             <div {...useBlockProps()}>
                 <ServerSideRender
-                    block="kalenda/day"
+                    block="my-catholic-calendar/day"
                     attributes={attributes}
                 />
             </div>

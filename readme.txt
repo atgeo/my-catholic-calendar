@@ -8,13 +8,11 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Display the Catholic liturgical calendar on WordPress using a native block, powered by the LitCal API.
+Display the Catholic liturgical calendar in WordPress using blocks.
 
 == Description ==
 
-My Catholic Calendar brings the Catholic liturgical calendar to WordPress. It uses the open LitCal API to show Catholic liturgical celebrations, including their rank and liturgical colour, for the General Roman Calendar.
-
-* **Day block** — shows today's liturgical celebration(s).
+My Catholic Calendar brings the Catholic liturgical calendar to WordPress. It uses the open LitCal API to display Catholic liturgical celebrations, including their rank and liturgical color, for the General Roman Calendar.
 
 * More blocks coming soon!
 
@@ -24,22 +22,24 @@ Liturgical data is provided by the [LitCal project](https://litcal.johnromanodor
 
 1. Upload the `my-catholic-calendar` folder to `/wp-content/plugins/`, or install it via the **Plugins** screen in WordPress.
 2. Activate the plugin through the **Plugins** menu.
-3. Add the Day block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
+3. Add the **Today's Liturgical Celebrations** block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
 
 == External Services ==
 
-My Catholic Calendar connects to the public LitCal API to fetch Catholic liturgical calendar data.
+This plugin connects to the public LitCal API (Liturgical Calendar API) to fetch Catholic liturgical calendar data — the dates and names of liturgical celebrations (solemnities, feasts, memorials) for the General Roman Calendar and, optionally, specific national or diocesan calendars. This is required for the plugin's core function: displaying the correct liturgical calendar on your site.
 
-When data is requested, the plugin sends only:
-* Liturgical year
-* Year type
-* Locale
-* Calendar identifier (when supported)
+Each request sends only:
+* Liturgical year and year type (civil or liturgical)
+* Locale (language for calendar names)
+* Calendar identifier (nation or diocese code), when a non-general
+  calendar is selected
 
-No personal information, user accounts, or site content is ever transmitted. Requests are made only when needed, and responses are cached locally in WordPress.
+No personal information, user accounts, visitor data, or site content is ever transmitted. Requests happen only when calendar data is needed and not already cached; responses are cached locally in WordPress to minimize repeat requests.
 
-* LitCal API: https://litcal.johnromanodorazio.com/
-* API Documentation: https://github.com/Liturgical-Calendar/LiturgicalCalendarAPI
+This service is provided by John Romano D'Orazio as a free, open-source, volunteer-maintained project. At the time of this writing, it does not publish a dedicated Terms of Service or Privacy Policy page. The project's public source code and license are available here:
+
+* Service: https://litcal.johnromanodorazio.com/
+* Source code and license: https://github.com/Liturgical-Calendar/LiturgicalCalendarAPI
 
 == Frequently Asked Questions ==
 
@@ -59,5 +59,5 @@ Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it 
 
 = 0.1.0 =
 * Initial release.
-* Added the Day block for displaying today's liturgical celebrations.
+* Added the Today's Liturgical Celebrations block.
 * Added REST API endpoints for liturgical calendar data.
