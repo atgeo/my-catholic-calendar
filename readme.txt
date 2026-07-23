@@ -1,5 +1,6 @@
 === My Catholic Calendar ===
 Contributors: atgeo
+Donate link: https://github.com/sponsors/atgeo
 Tags: catholic, liturgical calendar, liturgy, calendar, church
 Requires at least: 6.5
 Tested up to: 7.0
@@ -32,7 +33,7 @@ The full source code of this plugin is publicly available on GitHub:
 
 == External Services ==
 
-This plugin connects to the public LitCal API (Liturgical Calendar API) to fetch Catholic liturgical calendar data — the dates and names of liturgical celebrations (solemnities, feasts, memorials) for the General Roman Calendar and, optionally, specific national or diocesan calendars. This is required for the plugin's core function: displaying the correct liturgical calendar on your site.
+This plugin connects to the public LitCal API (Liturgical Calendar API) to fetch Catholic liturgical calendar data — the dates and names of liturgical celebrations (solemnities, feasts, memorials) for the General Roman Calendar. This is required for the plugin's core function: displaying the correct liturgical calendar on your site.
 
 Each request sends only:
 * Liturgical year and year type (civil or liturgical)
@@ -60,6 +61,10 @@ We currently support the General Roman Calendar.
 = Does it work with my theme? =
 
 Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it works in both block themes and classic themes. Liturgical colors are displayed automatically based on the celebration.
+
+== Screenshots ==
+
+1. The Day block displaying today's liturgical celebration.
 
 == Changelog ==
 

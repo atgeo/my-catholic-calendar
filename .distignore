@@ -46,6 +46,7 @@
 /vendor/**/PSR_COMPATIBILITY.md
 /vendor/**/ARCHITECTURE_SUMMARY.md
 /vendor/**/tests
+/vendor/**/docs
 /vendor/**/benchmarks
 /vendor/**/UPGRADE.md
 /vendor/**/.markdownlint.yml
