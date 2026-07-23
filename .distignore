@@ -30,11 +30,22 @@
 /vendor/**/CONTRIBUTING*
 /vendor/**/phpstan.neon.dist
 /vendor/**/phpunit.xml.dist
+/vendor/**/phpcs.xml.dist
 /vendor/**/composer.lock
 /vendor/**/package.json
+/vendor/**/captainhook.json
 /vendor/**/.vscode
 /vendor/**/.github
 /vendor/**/.gitignore
 /vendor/**/.DS_Store
+/vendor/**/CLAUDE.md
+/vendor/**/CODE_OF_CONDUCT.md
+/vendor/**/examples
+/vendor/**/FEATURE_ROADMAP.md
+/vendor/**/MARKDOWN_LINTING.md
+/vendor/**/PSR_COMPATIBILITY.md
+/vendor/**/tests
+/vendor/**/benchmarks
+/vendor/**/UPGRADE.md
 # Exclude anywhere
 .DS_Store
