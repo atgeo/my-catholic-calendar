@@ -1,6 +1,6 @@
 # Files and directories excluded from the distributed (WordPress.org) build.
-# Everything NOT listed here ships — notably vendor/, build/, languages/,
-# src/, kalenda.php, uninstall.php, composer.json, readme.txt and LICENSE.
+# Everything NOT listed here ships — notably vendor/, build/, src/,
+# my-catholic-calendar.php, uninstall.php, composer.json, readme.txt.
 
 /.git
 /.github
@@ -9,6 +9,8 @@
 /tests
 /blocks
 /assets
+/languages
+/LICENSE
 
 /.gitignore
 /.distignore
@@ -26,4 +28,13 @@
 /vendor/**/README*
 /vendor/**/CHANGELOG*
 /vendor/**/CONTRIBUTING*
-/.DS_Store
+/vendor/**/phpstan.neon.dist
+/vendor/**/phpunit.xml.dist
+/vendor/**/composer.lock
+/vendor/**/package.json
+/vendor/**/.vscode
+/vendor/**/.github
+/vendor/**/.gitignore
+/vendor/**/.DS_Store
+# Exclude anywhere
+.DS_Store
