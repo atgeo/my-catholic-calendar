@@ -71,7 +71,3 @@ Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it 
 == Support ==
 
 For support, please contact georgesk117@gmail.com.
-
-== Privacy ==
-
-This plugin does not send any personal data to any external services.
