@@ -18,6 +18,12 @@ My Catholic Calendar brings the Catholic liturgical calendar to WordPress. It us
 
 Liturgical data is provided by the [LitCal project](https://litcal.johnromanodorazio.com/) by John Romano D'Orazio.
 
+## Source Code
+
+The full source code of this plugin is publicly available on GitHub:
+
+[https://github.com/atgeo/my-catholic-calendar](https://github.com/atgeo/my-catholic-calendar)
+
 == Installation ==
 
 1. Upload the `my-catholic-calendar` folder to `/wp-content/plugins/`, or install it via the **Plugins** screen in WordPress.
@@ -61,3 +67,11 @@ Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it 
 * Initial release.
 * Added the Today's Celebrations block.
 * Added REST API endpoints for liturgical calendar data.
+
+== Support ==
+
+For support, please contact georgesk117@gmail.com.
+
+== Privacy ==
+
+This plugin does not send any personal data to any external services.
