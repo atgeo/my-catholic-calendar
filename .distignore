@@ -28,9 +28,9 @@
 /vendor/**/README*
 /vendor/**/CHANGELOG*
 /vendor/**/CONTRIBUTING*
-/vendor/**/phpstan.neon.dist
-/vendor/**/phpunit.xml.dist
-/vendor/**/phpcs.xml.dist
+/vendor/**/phpstan.neon*
+/vendor/**/phpunit.xml*
+/vendor/**/phpcs.xml*
 /vendor/**/composer.lock
 /vendor/**/package.json
 /vendor/**/captainhook.json
@@ -44,8 +44,10 @@
 /vendor/**/FEATURE_ROADMAP.md
 /vendor/**/MARKDOWN_LINTING.md
 /vendor/**/PSR_COMPATIBILITY.md
+/vendor/**/ARCHITECTURE_SUMMARY.md
 /vendor/**/tests
 /vendor/**/benchmarks
 /vendor/**/UPGRADE.md
+/vendor/**/.markdownlint.yml
 # Exclude anywhere
 .DS_Store
