@@ -38,7 +38,7 @@ try {
 		(string) ( $attributes['locale'] ?? 'en' )
 	);
 } catch ( InvalidArgumentException $e ) {
-    $my_catholic_calendar_render_error( __( 'This block is not configured correctly.', 'my-catholic-calendar' ) );
+	$my_catholic_calendar_render_error( __( 'This block is not configured correctly.', 'my-catholic-calendar' ) );
 	return;
 }
 
@@ -100,7 +100,7 @@ if ( ! in_array( $my_catholic_calendar_style, $my_catholic_calendar_allowed_styl
 						}
 
 						if ( ! empty( $my_catholic_calendar_event['liturgical_season_lcl'] ) ) {
-                            $my_catholic_calendar_meta_items[] = (string) $my_catholic_calendar_event['liturgical_season_lcl'];
+							$my_catholic_calendar_meta_items[] = (string) $my_catholic_calendar_event['liturgical_season_lcl'];
 						}
 						?>
 						<h3 class="kalenda-day__name event-color-<?php echo esc_attr( (string) ( $my_catholic_calendar_event['color'][0] ?? 'white' ) ); ?>">
