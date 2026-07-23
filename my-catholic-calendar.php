@@ -1,6 +1,6 @@
 <?php
 /**
- * Kalenda
+ * MyCatholicCalendar
  *
  * @package           MyCatholicCalendar
  * @author            Georges Kmeid
@@ -44,7 +44,7 @@ define( 'MyCatholicCalendar\\MY_CATHOLIC_CALENDAR_URL', plugin_dir_url( __FILE__
 
 if ( ! function_exists( 'my_catholic_calendar' ) ) {
 	/**
-	 * Retrieve the Kalenda plugin instance.
+	 * Retrieve the MyCatholicCalendar plugin instance.
 	 */
 	function my_catholic_calendar(): Plugin {
 		return Plugin::instance();
