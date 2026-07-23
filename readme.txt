@@ -22,7 +22,7 @@ Liturgical data is provided by the [LitCal project](https://litcal.johnromanodor
 
 1. Upload the `my-catholic-calendar` folder to `/wp-content/plugins/`, or install it via the **Plugins** screen in WordPress.
 2. Activate the plugin through the **Plugins** menu.
-3. Add the **Today's Liturgical Celebrations** block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
+3. Add the **Today's Celebrations** block to any post or page from the block inserter. Configure the calendar, language, and heading from the block settings sidebar.
 
 == External Services ==
 
@@ -59,5 +59,5 @@ Yes. The block is server-rendered with clean, theme-agnostic HTML markup, so it 
 
 = 0.1.0 =
 * Initial release.
-* Added the Today's Liturgical Celebrations block.
+* Added the Today's Celebrations block.
 * Added REST API endpoints for liturgical calendar data.

@@ -2,7 +2,7 @@
   "apiVersion": 3,
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "name": "my-catholic-calendar/day",
-  "title": "Today's Liturgical Celebrations",
+  "title": "Today's Celebrations",
   "description": "Displays today's liturgical celebrations.",
   "category": "my-catholic-calendar",
   "textdomain": "my-catholic-calendar",
