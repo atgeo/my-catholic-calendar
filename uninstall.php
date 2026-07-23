@@ -44,5 +44,5 @@ if ( is_multisite() ) {
 		restore_current_blog();
 	}
 } else {
-	mcc_uninstall_site();
+	my_catholic_calendar_uninstall_site();
 }
