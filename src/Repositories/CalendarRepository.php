@@ -116,7 +116,7 @@ final class CalendarRepository {
 	 */
 	private function upstream_error(): WP_Error {
 		return new WP_Error(
-			'mcc_upstream_unavailable',
+			'my_catholic_calendar_upstream_unavailable',
 			__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'my-catholic-calendar' ),
 			array( 'status' => 502 )
 		);

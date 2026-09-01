@@ -59,7 +59,7 @@ final class MetadataController implements RouteProvider {
 			$data = $this->gateway->metadata();
 		} catch ( GatewayException $e ) {
 			return new WP_Error(
-				'mcc_upstream_unavailable',
+				'my_catholic_calendar_upstream_unavailable',
 				__( 'The liturgical calendar service is currently unavailable. Please try again later.', 'my-catholic-calendar' ),
 				array( 'status' => 502 )
 			);

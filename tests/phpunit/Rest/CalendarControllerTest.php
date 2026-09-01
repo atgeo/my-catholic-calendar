@@ -115,7 +115,7 @@ final class CalendarControllerTest extends TestCase {
 		);
 
 		self::assertInstanceOf( WP_Error::class, $response );
-		self::assertSame( 'mcc_upstream_unavailable', $response->get_error_code() );
+		self::assertSame( 'my_catholic_calendar_upstream_unavailable', $response->get_error_code() );
 		self::assertSame( 502, $response->get_error_data()['status'] );
 		self::assertStringNotContainsString( 'boom', $response->get_error_message() );
 	}
