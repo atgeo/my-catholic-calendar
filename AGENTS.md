@@ -1,6 +1,6 @@
 # My Catholic Calendar — agent notes
 
-WordPress plugin that displays the Catholic liturgical calendar via the [LitCal API](https://litcal.johnromanodorazio.com/). Thin WP layer over `liturgical-calendar/components` (used unmodified). PHP 8.1+, WP 6.5+, Gutenberg dynamic block.
+WordPress plugin that displays the Catholic liturgical calendar via the [LitCal API](https://litcal.johnromanodorazio.com/). Thin WP layer over `liturgical-calendar/components` (used unmodified). PHP 8.2+, WP 6.5+, Gutenberg dynamic block.
 
 Status (`0.1.0`): REST API and the `my-catholic-calendar/day` block ship. Not built: admin settings UI, month/grid block, Interactivity API (declared in `package.json`, unused).
 

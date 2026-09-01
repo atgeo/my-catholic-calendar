@@ -13,7 +13,7 @@
  * Description:       Displays the Catholic liturgical calendar on any WordPress theme, powered by the LitCal API.
  * Version:           0.1.0
  * Requires at least: 6.5
- * Requires PHP:      8.1
+ * Requires PHP:      8.2
  * Author:            Georges Kmeid
  * Author URI:        https://github.com/atgeo
  * License:           GPL-2.0-or-later
@@ -34,7 +34,7 @@ if ( defined( 'MyCatholicCalendar\\MY_CATHOLIC_CALENDAR_VERSION' ) ) {
 }
 
 const MY_CATHOLIC_CALENDAR_VERSION     = '0.1.0';
-const MY_CATHOLIC_CALENDAR_MINIMUM_PHP = '8.1';
+const MY_CATHOLIC_CALENDAR_MINIMUM_PHP = '8.2';
 const MY_CATHOLIC_CALENDAR_MINIMUM_WP  = '6.5';
 
 define( 'MyCatholicCalendar\\MY_CATHOLIC_CALENDAR_FILE', __FILE__ );

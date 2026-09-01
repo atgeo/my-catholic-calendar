@@ -2,10 +2,6 @@
 
 A modern WordPress plugin that displays the **Catholic liturgical calendar** on any theme, powered by the [LitCal API](https://litcal.johnromanodorazio.com/).
 
-![Day block](.github/images/day-frontend.png)
-
-> ⚠️ **Status:** early development (`0.1.0`). The REST API and the shipped block work, but the public contract isn't stable yet.
-
 ## Features
 
 - 🕯️ **Day block** — displays today's Catholic liturgical celebration(s), including name, rank, and liturgical color. Fully server-rendered (`render.php`) for compatibility with any theme. (A month/grid calendar block is planned for a future release.)
@@ -31,14 +27,14 @@ src/                              PSR-4 (MyCatholicCalendar\) — gateway, repos
 blocks/                           Block sources (built into build/ by @wordpress/scripts)
 build/                            Compiled block assets
 assets/                           Plugin icon assets
-languages/                        Translations
+languages/                        POT translation template
 tests/                            PHPUnit tests
 ```
 
 ## Requirements
 
 - WordPress **6.5+**
-- PHP **8.1+**
+- PHP **8.2+**
 
 ## Development
 

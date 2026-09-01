@@ -1,6 +1,6 @@
 parameters:
     level: 6
-    phpVersion: 80100
+    phpVersion: 80200
     paths:
         - src
     # my-catholic-calendar.php defines the plugin constants (MY_CATHOLIC_CALENDAR_FILE, MY_CATHOLIC_CALENDAR_PATH, …)
