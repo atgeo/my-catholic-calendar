@@ -36,10 +36,10 @@
 		"env:stop": "wp-env stop"
 	},
 	"devDependencies": {
-		"@wordpress/env": "^11.10.0",
-		"@wordpress/scripts": "^32.6.0"
+		"@wordpress/env": "^11.14.0",
+		"@wordpress/scripts": "^34.2.0"
 	},
 	"dependencies": {
-		"@wordpress/interactivity": "^6.50.0"
+		"@wordpress/interactivity": "^6.54.0"
 	}
 }
