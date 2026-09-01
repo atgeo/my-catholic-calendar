@@ -3,7 +3,7 @@ Contributors: atgeo
 Donate link: https://github.com/sponsors/atgeo
 Tags: catholic, liturgical calendar, liturgy, calendar, church
 Requires at least: 6.5
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 8.1
 Stable tag: 0.1.0
 License: GPLv2 or later
