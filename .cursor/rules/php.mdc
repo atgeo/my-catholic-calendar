@@ -1,0 +1,16 @@
+---
+description: PHP conventions and gateway boundary
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# PHP
+
+- snake_case on our symbols (`$calendar_id`, method names). Vendor camelCase (`yearType()`) stays at the adapter.
+- Long arrays `array()`, Yoda (`null === $x`), tabs, WPCS docblocks.
+- New classes go in `src/` (PSR-4 StudlyCase). Talk to `LitCalGateway`, never the vendor library or HTTP.
+- `Contracts/` and value objects stay WordPress-agnostic.
+- Prefix globals with `my_catholic_calendar` / `MyCatholicCalendar` / `MY_CATHOLIC_CALENDAR`.
+- Transient keys must start with `my_catholic_calendar_`.
+- Don't strip sanctioned phpcs/phpstan ignores (services filter, uninstall/`flush()` SQL, exception messages, `get_block_wrapper_attributes()`).
+- Constructor dependency changes: grep `tests/` and update every call site.

@@ -1,0 +1,14 @@
+---
+description: Gutenberg block conventions
+globs: "blocks/**/*.{js,json,scss,php}"
+alwaysApply: false
+---
+
+# Blocks
+
+- `block.json` attributes and JS are camelCase (`calendarId`, `showDate`).
+- The day block is dynamic: `save.js` returns `null`; `render.php` paints the front.
+- `date` is unused. `render.php` always uses `current_datetime()`.
+- `type` and `calendarId` are used in PHP; the inspector does not expose them yet.
+- CSS BEM is `mcc-day`. Don't rename those classes to `my_catholic_calendar_`.
+- PHPStan does not scan `blocks/*/render.php`.

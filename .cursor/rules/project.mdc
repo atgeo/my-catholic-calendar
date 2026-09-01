@@ -1,0 +1,12 @@
+---
+description: Follow AGENTS.md; merge gates after PHP changes
+alwaysApply: true
+---
+
+# Project
+
+Read and follow `AGENTS.md`. Do not duplicate it here.
+
+After PHP changes run `composer run phpcs`, `composer run phpstan`, and `composer run test`. Run `vendor/bin/phpcbf` first for formatting.
+
+Never edit `vendor/`. Don't hand-edit `composer.lock`.
